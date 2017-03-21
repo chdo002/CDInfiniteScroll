@@ -1,0 +1,10 @@
+framework module yw_Extension {
+  umbrella header "yw_Extension.h"
+
+  export *
+  module * { export * }
+}
+
+module yw_Extension.Swift {
+    header "yw_Extension-Swift.h"
+}

@@ -14,6 +14,9 @@
 		E95FBF7B1E7BEAFF00B7D337 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E95FBF791E7BEAFF00B7D337 /* LaunchScreen.storyboard */; };
 		E95FBF861E7BEAFF00B7D337 /* CDInfiniteScrollTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF851E7BEAFF00B7D337 /* CDInfiniteScrollTests.swift */; };
 		E95FBF911E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF901E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift */; };
+		E95FBFA01E7BEC1300B7D337 /* CDInfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF9F1E7BEC1300B7D337 /* CDInfiniteScroll.swift */; };
+		E981C6D61E8105F500D546B1 /* yw_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6D41E8105F300D546B1 /* yw_Extension.framework */; };
+		E981C6D71E8105F500D546B1 /* yw_Extension.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6D41E8105F300D546B1 /* yw_Extension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +36,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E981C6D81E8105F500D546B1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E981C6D71E8105F500D546B1 /* yw_Extension.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E95FBF6D1E7BEAFF00B7D337 /* CDInfiniteScroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDInfiniteScroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E95FBF701E7BEAFF00B7D337 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +64,8 @@
 		E95FBF8C1E7BEAFF00B7D337 /* CDInfiniteScrollUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CDInfiniteScrollUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E95FBF901E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDInfiniteScrollUITests.swift; sourceTree = "<group>"; };
 		E95FBF921E7BEAFF00B7D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E95FBF9F1E7BEC1300B7D337 /* CDInfiniteScroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDInfiniteScroll.swift; sourceTree = "<group>"; };
+		E981C6D41E8105F300D546B1 /* yw_Extension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = yw_Extension.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E981C6D61E8105F500D546B1 /* yw_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +94,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E92980FA1E80D46D00D744E3 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				E981C6D41E8105F300D546B1 /* yw_Extension.framework */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		E95FBF641E7BEAFF00B7D337 = {
 			isa = PBXGroup;
 			children = (
@@ -99,10 +127,12 @@
 			children = (
 				E95FBF701E7BEAFF00B7D337 /* AppDelegate.swift */,
 				E95FBF721E7BEAFF00B7D337 /* ViewController.swift */,
+				E95FBF9E1E7BEC0000B7D337 /* InfiniteScroll */,
 				E95FBF741E7BEAFF00B7D337 /* Main.storyboard */,
 				E95FBF771E7BEAFF00B7D337 /* Assets.xcassets */,
 				E95FBF791E7BEAFF00B7D337 /* LaunchScreen.storyboard */,
 				E95FBF7C1E7BEAFF00B7D337 /* Info.plist */,
+				E92980FA1E80D46D00D744E3 /* lib */,
 			);
 			path = CDInfiniteScroll;
 			sourceTree = "<group>";
@@ -125,6 +155,14 @@
 			path = CDInfiniteScrollUITests;
 			sourceTree = "<group>";
 		};
+		E95FBF9E1E7BEC0000B7D337 /* InfiniteScroll */ = {
+			isa = PBXGroup;
+			children = (
+				E95FBF9F1E7BEC1300B7D337 /* CDInfiniteScroll.swift */,
+			);
+			path = InfiniteScroll;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +173,7 @@
 				E95FBF691E7BEAFF00B7D337 /* Sources */,
 				E95FBF6A1E7BEAFF00B7D337 /* Frameworks */,
 				E95FBF6B1E7BEAFF00B7D337 /* Resources */,
+				E981C6D81E8105F500D546B1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -193,6 +232,7 @@
 				TargetAttributes = {
 					E95FBF6C1E7BEAFF00B7D337 = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = 2UPL3JMY5X;
 						ProvisioningStyle = Automatic;
 					};
 					E95FBF801E7BEAFF00B7D337 = {
@@ -260,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E95FBF731E7BEAFF00B7D337 /* ViewController.swift in Sources */,
+				E95FBFA01E7BEC1300B7D337 /* CDInfiniteScroll.swift in Sources */,
 				E95FBF711E7BEAFF00B7D337 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +451,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2UPL3JMY5X;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CDInfiniteScroll",
+					"$(PROJECT_DIR)/CDInfiniteScroll/lib",
+				);
 				INFOPLIST_FILE = CDInfiniteScroll/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = yw.CDInfiniteScroll;
@@ -422,6 +469,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2UPL3JMY5X;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CDInfiniteScroll",
+					"$(PROJECT_DIR)/CDInfiniteScroll/lib",
+				);
 				INFOPLIST_FILE = CDInfiniteScroll/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = yw.CDInfiniteScroll;
@@ -503,6 +556,7 @@
 				E95FBF971E7BEAFF00B7D337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E95FBF981E7BEAFF00B7D337 /* Build configuration list for PBXNativeTarget "CDInfiniteScrollTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +565,7 @@
 				E95FBF9A1E7BEAFF00B7D337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E95FBF9B1E7BEAFF00B7D337 /* Build configuration list for PBXNativeTarget "CDInfiniteScrollUITests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +574,7 @@
 				E95FBF9D1E7BEAFF00B7D337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
