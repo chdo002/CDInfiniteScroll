@@ -15,8 +15,8 @@
 		E95FBF861E7BEAFF00B7D337 /* CDInfiniteScrollTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF851E7BEAFF00B7D337 /* CDInfiniteScrollTests.swift */; };
 		E95FBF911E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF901E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift */; };
 		E95FBFA01E7BEC1300B7D337 /* CDInfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FBF9F1E7BEC1300B7D337 /* CDInfiniteScroll.swift */; };
-		E981C6D61E8105F500D546B1 /* yw_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6D41E8105F300D546B1 /* yw_Extension.framework */; };
-		E981C6D71E8105F500D546B1 /* yw_Extension.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6D41E8105F300D546B1 /* yw_Extension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E981C6E21E812E2300D546B1 /* yw_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6E01E812E2000D546B1 /* yw_Extension.framework */; };
+		E981C6E31E812E2300D546B1 /* yw_Extension.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E981C6E01E812E2000D546B1 /* yw_Extension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,13 +37,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E981C6D81E8105F500D546B1 /* Embed Frameworks */ = {
+		E981C6E41E812E2300D546B1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E981C6D71E8105F500D546B1 /* yw_Extension.framework in Embed Frameworks */,
+				E981C6E31E812E2300D546B1 /* yw_Extension.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,7 +65,7 @@
 		E95FBF901E7BEAFF00B7D337 /* CDInfiniteScrollUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDInfiniteScrollUITests.swift; sourceTree = "<group>"; };
 		E95FBF921E7BEAFF00B7D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E95FBF9F1E7BEC1300B7D337 /* CDInfiniteScroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDInfiniteScroll.swift; sourceTree = "<group>"; };
-		E981C6D41E8105F300D546B1 /* yw_Extension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = yw_Extension.framework; sourceTree = "<group>"; };
+		E981C6E01E812E2000D546B1 /* yw_Extension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = yw_Extension.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E981C6D61E8105F500D546B1 /* yw_Extension.framework in Frameworks */,
+				E981C6E21E812E2300D546B1 /* yw_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 		E92980FA1E80D46D00D744E3 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				E981C6D41E8105F300D546B1 /* yw_Extension.framework */,
+				E981C6E01E812E2000D546B1 /* yw_Extension.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -173,7 +173,7 @@
 				E95FBF691E7BEAFF00B7D337 /* Sources */,
 				E95FBF6A1E7BEAFF00B7D337 /* Frameworks */,
 				E95FBF6B1E7BEAFF00B7D337 /* Resources */,
-				E981C6D81E8105F500D546B1 /* Embed Frameworks */,
+				E981C6E41E812E2300D546B1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

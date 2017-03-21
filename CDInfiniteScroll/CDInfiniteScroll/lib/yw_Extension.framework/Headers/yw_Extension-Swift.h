@@ -167,6 +167,11 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 - (void)textDidChange;
 @end
 
+
+@interface UIView (SWIFT_EXTENSION(yw_Extension))
+- (UIImage * _Nullable)snapShot;
+@end
+
 @class UIAlertAction;
 
 @interface UIViewController (SWIFT_EXTENSION(yw_Extension))

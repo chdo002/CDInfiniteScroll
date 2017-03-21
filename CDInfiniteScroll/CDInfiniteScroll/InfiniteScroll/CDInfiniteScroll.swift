@@ -1,7 +1,10 @@
 
 
 import UIKit
+import yw_Extension
 
+/* - - - - -  */
+@objc
 public protocol CDInfiniteScrollDelegate: NSObjectProtocol {
     
     // 子视图数量
@@ -10,9 +13,8 @@ public protocol CDInfiniteScrollDelegate: NSObjectProtocol {
     // itme的宽度
     func itemWidthOfItems(in scrollView: CDInfiniteScroll) -> CGFloat
     
-    // 每个item视图
-    func scrollView(_ scrollView: CDInfiniteScroll, viewForRow row: Int) -> UIView
-    
+    // 所有item的视图
+    func itemViewsForScrollView(_ scrollView: CDInfiniteScroll) -> [UIView]
 }
 
 open class CDInfiniteScroll: UIView {
@@ -28,7 +30,6 @@ open class CDInfiniteScroll: UIView {
             self.setUpContent()
         }
     }
-    
     
     // MARK:- ****************************************inner***********************************************
     
@@ -49,24 +50,53 @@ open class CDInfiniteScroll: UIView {
     
     func setUpContent(){
         
+        guard let itemW = self.delegate?.itemWidthOfItems(in: self) else { return }
+        guard let itemCount =  self.delegate?.numberOfItems(in: self) else { return }
         
-//        guard let itemW = self.delegate?.itemWidthOfItems(in: self) else {
-//            
-//            return
-//        }
-//        
-//        guard let itemCount =  self.delegate?.numberOfItems(in: self) else {
-//            
-//            return
-//        }
+        let sigleW = itemW * CGFloat(itemCount) // all view width combine
+        let itemSize = CGSize(width: itemW, height: self.frame.height)
         
-//        let sigleW = itemW * itemCount
         
-//        for i in 0..<itemCount * 5 {
-//            
-//        }
         
-     
+        GCD.asy {
+            
+            if let vies = self.delegate?.itemViewsForScrollView(self) {
+                guard vies.count == itemCount else { return }
+                
+                // 首先将试图展示出来
+                self.scrollView.contentSize = CGSize(width: CGFloat(itemCount * 5) * itemW, height: 0)
+                GCD.main {
+                    for (i, vie) in vies.enumerated() {
+                        let itemx = CGFloat(i) * itemW + sigleW * 2
+                        let rect = CGRect(origin: CGPoint(x: itemx, y: 0), size: itemSize)
+                        vie.frame = rect
+                        self.scrollView.addSubview(vie)
+                    }
+                }
+                
+                // 两侧视图
+                var leftSection  = [UIView]()
+                var rightSection = [UIView]()
+                for (i, vie) in vies.enumerated() {
+                    
+                    let leftView    = UIImageView(image: vie.snapShot())
+                    leftView.frame  = CGRect(origin: CGPoint(x:CGFloat(i) * itemW, y:0), size: itemSize)
+                    leftSection.append(leftView)
+                    
+                    let rightView   = UIImageView(image: vie.snapShot())
+                    rightView.frame = CGRect(origin: CGPoint(x:CGFloat(i) * itemW + sigleW * 3, y:0), size: itemSize)
+                    rightSection.append(rightView)
+                    
+                    GCD.main {
+                        self.scrollView.addSubview(leftView)
+                        self.scrollView.addSubview(rightView)
+                    }
+                }
+                
+                self.imageStore = leftSection + vies + rightSection
+            }
+        }
+        
         
     }
     

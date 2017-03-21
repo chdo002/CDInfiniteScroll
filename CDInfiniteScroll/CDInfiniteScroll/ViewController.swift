@@ -10,6 +10,9 @@ import UIKit
 
 import yw_Extension
 
+
+
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -25,13 +28,20 @@ class ViewController: UIViewController {
         
         self.view.addSubview(lab)
         
+        lab.font = UIFont.winnie(size: 15)
+        lab.text = "123123"
         
-//        print("123".md5)
+        
+        
     }
     
+    var imgV = UIImageView(image: #imageLiteral(resourceName: "img"))
     
+
     override func viewDidAppear(_ animated: Bool) {
-        self.showAlert(title: "123", message: "444", preferredStyle: UIAlertControllerStyle.alert, actionTitle: "5fff", handler: nil)
+        
+        
+
     }
     
     func numberOfItems(in scrollView: CDInfiniteScroll) -> Int {
