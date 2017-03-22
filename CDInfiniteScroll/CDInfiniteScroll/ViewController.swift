@@ -8,17 +8,17 @@
 
 import UIKit
 
-import yw_Extension
-
-
-
 
 class ViewController: UIViewController, CDInfiniteScrollDelegate {
 
+    
+    var arr = [UIImageView]()
+    var scroll: CDInfiniteScroll!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let arr = [#imageLiteral(resourceName: "padPic"),#imageLiteral(resourceName: "redpic"),#imageLiteral(resourceName: "redpic"),#imageLiteral(resourceName: "redpic"),#imageLiteral(resourceName: "watchPic")]
+
+        let arr = [#imageLiteral(resourceName: "Artboard"),#imageLiteral(resourceName: "Artboard Copy"), #imageLiteral(resourceName: "Artboard Copy 2"), #imageLiteral(resourceName: "Artboard Copy 3"), #imageLiteral(resourceName: "Artboard Copy 4"), #imageLiteral(resourceName: "Artboard Copy 5"), #imageLiteral(resourceName: "Artboard Copy 6"), #imageLiteral(resourceName: "Artboard Copy 7")]
         
         for img in arr {
             let vvv = UIImageView(image: img)
@@ -27,35 +27,42 @@ class ViewController: UIViewController, CDInfiniteScrollDelegate {
         }
         
         scroll = CDInfiniteScroll(frame: CGRect(origin: CGPoint(x:0, y: 100),
-                                                     size: CGSize(width: screenW, height: 80)))
-        scroll.dataSouce = self
+                                                  size: CGSize(width: self.view.frame.width, height: 160)))
+//        scroll.scrollStyle = .scrollScale(0.7, 0.3)
+        scroll.scale      = 0.7
+        scroll.scaleAlpha = 0.3
+        scroll.scroDelegate = self
+        
         self.view.addSubview(scroll)
-        self.view.backgroundColor = UIColor.cyan
+        
+        self.view.backgroundColor = UIColor.lightGray
     }
-    var scroll: CDInfiniteScroll!
     
+    @IBAction func scaleAction(_ sender: UISlider) {
+        scroll.scale = CGFloat(sender.value)
+    }
+    
+    @IBAction func alphaAction(_ sender: UISlider) {
+        scroll.scaleAlpha = CGFloat(sender.value)
+    }
+    
+    // MARK:- ****************************************CDInfiniteScrollDelegate***********************************************
+    
+    // item数量
     func numberOfItems(in scrollView: CDInfiniteScroll) -> Int {
         return arr.count
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.scroll.testFunc()
-    }
-    
     // itme的宽度
     func itemWidthOfItems(in scrollView: CDInfiniteScroll) -> CGFloat {
         return 80
     }
     
-    var arr = [UIImageView]()
-    // 所有item的视图
     func itemViewsForScrollView(_ scrollView: CDInfiniteScroll) -> [UIView]{
         return arr
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        
-        
-    }
     
+//  optional
+    func scrollViewItemsDidSelect(_ scrollView: CDInfiniteScroll, at index: Int) {
+        print("scrollView select ar index \(index)")
+    }
 }

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,12 +21,50 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.69999999999999996" minValue="0.5" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="qnx-1R-XV3">
+                                <rect key="frame" x="76" y="436" width="270" height="31"/>
+                                <connections>
+                                    <action selector="scaleAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="BCi-Y3-JQn"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.29999999999999999" minValue="0.20000000000000001" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="F0o-sB-Vqw">
+                                <rect key="frame" x="78" y="562" width="268" height="31"/>
+                                <connections>
+                                    <action selector="alphaAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="g9h-f0-oM2"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="alpha" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yvr-N7-qqQ">
+                                <rect key="frame" x="16" y="567" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="scale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Npq-RU-L2B">
+                                <rect key="frame" x="16" y="441" width="40" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="qnx-1R-XV3" firstAttribute="leading" secondItem="Npq-RU-L2B" secondAttribute="trailing" constant="22" id="0RS-uD-9dE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qnx-1R-XV3" secondAttribute="trailing" constant="15" id="Aeu-rR-SEA"/>
+                            <constraint firstItem="yvr-N7-qqQ" firstAttribute="top" secondItem="Npq-RU-L2B" secondAttribute="bottom" constant="105" id="Ai3-6z-b78"/>
+                            <constraint firstItem="qnx-1R-XV3" firstAttribute="centerY" secondItem="Npq-RU-L2B" secondAttribute="centerY" id="BJz-x0-GrI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="F0o-sB-Vqw" secondAttribute="trailing" constant="15" id="Fky-2k-WXa"/>
+                            <constraint firstItem="F0o-sB-Vqw" firstAttribute="centerY" secondItem="yvr-N7-qqQ" secondAttribute="centerY" id="cut-Xe-7Bd"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="Npq-RU-L2B" secondAttribute="leading" id="m3F-gx-9ib"/>
+                            <constraint firstItem="F0o-sB-Vqw" firstAttribute="leading" secondItem="yvr-N7-qqQ" secondAttribute="trailing" constant="22" id="ofX-i4-mjO"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="yvr-N7-qqQ" secondAttribute="bottom" constant="79" id="ogd-8t-Dac"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="yvr-N7-qqQ" secondAttribute="leading" id="puy-0H-wJ1"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-65" y="118"/>
+            <point key="canvasLocation" x="-66.400000000000006" y="117.39130434782609"/>
         </scene>
     </scenes>
 </document>
