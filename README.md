@@ -10,4 +10,5 @@
 >
 >5 ~~可以接受点击及其他外部控制~~未完成
 
-![ ](http://upload-images.jianshu.io/upload_images/951898-a1d38f24d666db3e.gif?imageMogr2/auto-orient/strip)
+
+![ ](http://upload-images.jianshu.io/upload_images/951898-eac359a893c739b6.gif?imageMogr2/auto-orient/strip)
