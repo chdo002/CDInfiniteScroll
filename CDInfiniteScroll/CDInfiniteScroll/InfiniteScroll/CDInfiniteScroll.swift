@@ -36,12 +36,12 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
 //    var scrollStyle: InfiniteScolStyle = .scrollFlat
     
-    var scale:      CGFloat = 1 {
+    public var scale:      CGFloat = 1 {
         didSet {
             self.scaleAnimate()
         }
     }
-    var scaleAlpha: CGFloat = 1 {
+    public var scaleAlpha: CGFloat = 1 {
         didSet {
             self.scaleAnimate()
         }
@@ -52,17 +52,18 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
             self.setUpContent()
         }
     }
+  
+    public var currentViewIndex = 0
     
     // MARK:- ****************************************inner***********************************************
     
-    private(set) var snapping = false
     private(set) var itemW: CGFloat = 0      // 单个视图宽度
     private(set) var itemSize = CGSize.zero  // 单个视图体积
     private(set) var sigleW: CGFloat = 0     // 单个contentSize宽度
     private(set) var itemCount: Int = 0      // 视图数量
     private(set) var viewStore = [UIView]()  // 所有视图
-    private(set) var currentViewIndex = 0
-    
+    private(set) var snapping = false        // 是否在自动对齐中
+ 
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -258,5 +259,4 @@ fileprivate extension UIView {
             return nil
         }
     }
-    
 }
