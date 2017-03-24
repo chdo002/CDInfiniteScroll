@@ -49,6 +49,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
     public weak var scroDelegate: CDInfiniteScrollDelegate? {
         didSet{
+            self.reSet()
             self.setUpContent()
         }
     }
@@ -76,6 +77,13 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         self.delegate = self
     }
    
+    private func reSet(){
+        self.viewStore.removeAll()
+        self.snapping = false
+        self.currentViewIndex = 0
+        
+    }
+    
     private func setUpContent(){
         
         // 视图宽度
