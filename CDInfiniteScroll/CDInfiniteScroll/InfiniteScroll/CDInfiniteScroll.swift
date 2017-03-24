@@ -257,7 +257,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
 
 fileprivate extension UIView {
     fileprivate func snapShot() -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(self.frame.size, true, 0)
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0)
         if let context = UIGraphicsGetCurrentContext() {
             self.layer.render(in: context)
             let image = UIGraphicsGetImageFromCurrentImageContext()
