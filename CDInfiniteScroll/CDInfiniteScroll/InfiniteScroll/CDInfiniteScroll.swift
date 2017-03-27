@@ -165,7 +165,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                 self.rightPlaceholder.frame = CGRect(origin: CGPoint(x: baseX + CGFloat(itemCount) * itemW, y: 0),
                                                        size: CGSize(width: baseX, height: self.frame.height))
                 self.addSubview(self.rightPlaceholder)
-                
+                self.scaleAnimate()
             } else {
                 
                 self.willinfinite = true
