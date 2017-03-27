@@ -10,23 +10,21 @@ class ViewController: UIViewController, CDInfiniteScrollDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
-        
-        
         let centerView = UIView(frame: CGRect(x: self.view.frame.width / 2 - 5, y: 95, width: 10, height: 5))
         centerView.backgroundColor = UIColor.black
         self.view.addSubview(centerView)
         
-//        let arr = [#imageLiteral(resourceName: "Artboard"),#imageLiteral(resourceName: "Artboard Copy"), #imageLiteral(resourceName: "Artboard Copy 2"), #imageLiteral(resourceName: "Artboard Copy 3"), #imageLiteral(resourceName: "Artboard Copy 4"), #imageLiteral(resourceName: "Artboard Copy 5"), #imageLiteral(resourceName: "Artboard Copy 6"), #imageLiteral(resourceName: "Artboard Copy 7")]        
-        let arr = [#imageLiteral(resourceName: "Artboard"),#imageLiteral(resourceName: "Artboard Copy"), #imageLiteral(resourceName: "Artboard Copy 5")]
+        let arr = [#imageLiteral(resourceName: "Artboard"),#imageLiteral(resourceName: "Artboard Copy"), #imageLiteral(resourceName: "Artboard Copy 2"), #imageLiteral(resourceName: "Artboard Copy 3"), #imageLiteral(resourceName: "Artboard Copy 4"), #imageLiteral(resourceName: "Artboard Copy 5"), #imageLiteral(resourceName: "Artboard Copy 6"), #imageLiteral(resourceName: "Artboard Copy 7")]        
+//        let arr = [#imageLiteral(resourceName: "Artboard"),#imageLiteral(resourceName: "Artboard Copy"), #imageLiteral(resourceName: "Artboard Copy 5")]
         for img in arr {
             let vvv = UIImageView(image: img)
             vvv.contentMode = .scaleAspectFit
             self.arr.append(vvv)
         }
-        
-        scroll = CDInfiniteScroll(frame: CGRect(origin: CGPoint(x:0, y: 100),
-                                                  size: CGSize(width: self.view.frame.width, height: 160)))
+
+        let rect = CGRect(origin: CGPoint(x:0, y: 100), size: CGSize(width: self.view.frame.width, height: 160))
+//        scroll = CDInfiniteScroll(frame: rect, isAlignmentCenter: false)
+        scroll = CDInfiniteScroll(frame: rect)
         scroll.scale      = 0.7
         scroll.scaleAlpha = 0.3
         scroll.scroDelegate = self

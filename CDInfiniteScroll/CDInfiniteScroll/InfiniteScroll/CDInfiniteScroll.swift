@@ -5,7 +5,6 @@ import UIKit
 
 /* - - - - -  */
 
-
 /*
  若发现有布局问题，请检查viewcontroller的automaticallyAdjustsScrollViewInsets属性
  */
@@ -23,22 +22,39 @@ public protocol CDInfiniteScrollDelegate: NSObjectProtocol {
     
     //
     @objc optional func scrollViewItemsWillSelect(_ scrollView: CDInfiniteScroll)
-    
     @objc optional func scrollViewItemsDidSelect(_ scrollView: CDInfiniteScroll, at index: Int)
 }
 
 open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
+    
+    /*
+     *  大小变形
+     */
     public var scale:      CGFloat = 1 {
         didSet {
-            self.scaleAnimate()
+            if isAlignmentCenter {
+                self.scaleAnimate()
+            } else {
+                self.fixItemAnimate(self.currentViewIndex)
+            }
         }
     }
+    
+    /*
+     *  透明变形
+     */
+    
     public var scaleAlpha: CGFloat = 1 {
         didSet {
-            self.scaleAnimate()
+            if isAlignmentCenter {
+                self.scaleAnimate()
+            } else {
+                self.fixItemAnimate(self.currentViewIndex)
+            }
         }
     }
+    
     
     public weak var scroDelegate: CDInfiniteScrollDelegate? {
         didSet{
@@ -62,16 +78,20 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
             self.currentViewIndex = index
             
         } else {
-            
             self.currentViewIndex = index
-            let offsetx = CGFloat(index) * itemW
             
-            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-                self.contentOffset = CGPoint(x: offsetx, y: 0)
-            }, completion: { (_) in
-                self.snapping = false
-                self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
-            })
+            if isAlignmentCenter {
+                let offsetx = CGFloat(index) * itemW
+                
+                UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+                    self.contentOffset = CGPoint(x: offsetx, y: 0)
+                }, completion: { (_) in
+                    self.snapping = false
+                    self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+                })
+            } else {
+                self.fixItemAnimate(index)
+            }
         }
     }
     
@@ -83,6 +103,8 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     private(set) var itemCount: Int = 0      // 视图数量
     private(set) var viewStore = [UIView]()  // 所有视图
     private(set) var snapping = false        // 是否在自动对齐中
+    
+    private(set) var isAlignmentCenter: Bool = true
     
     private(set) var leftPlaceholder: UIView = {
         let vv = UIView()
@@ -98,9 +120,13 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
     private(set) var willinfinite = true
     
-    public override init(frame: CGRect) {
+    /*
+     * isAlignmentCenter: 滚动时，当前视图是否会在中央
+     */
+    public init(frame: CGRect, isAlignmentCenter: Bool = true){
         super.init(frame: frame)
         
+        self.isAlignmentCenter = isAlignmentCenter
         self.clipsToBounds = true
         self.isPagingEnabled = false
         self.backgroundColor = UIColor.cyan
@@ -115,7 +141,6 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         for vvv in self.viewStore {
             vvv.removeFromSuperview()
         }
-        
         self.viewStore.removeAll()
         self.snapping = false
         self.currentViewIndex = 0
@@ -146,26 +171,48 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                 
                 self.willinfinite = false
                 
-                let contentWidth = CGFloat(itemCount - 1) * itemW + frame.width
-                self.contentSize = CGSize(width: contentWidth, height: 0)
-                
-                let baseX = (self.frame.width - itemW) * 0.5 //
-                for (i, vie) in centerViews.enumerated() {
-                    let rect = CGRect(origin: CGPoint(x: baseX + CGFloat(i) * itemW, y: 0),
-                                        size: self.itemSize)
-                    vie.frame = rect
-                    vie.clipsToBounds = true
-                    self.addSubview(vie)
+                // 中间对齐
+                if isAlignmentCenter {
+                    
+                    let contentWidth = CGFloat(itemCount - 1) * itemW + frame.width
+                    
+                    self.contentSize = CGSize(width: contentWidth, height: 0)
+                    
+                    let baseX = (self.frame.width - itemW) * 0.5 //
+                    for (i, vie) in centerViews.enumerated() {
+                        let rect = CGRect(origin: CGPoint(x: baseX + CGFloat(i) * itemW, y: 0), size: self.itemSize)
+                        vie.frame = rect
+                        vie.clipsToBounds = true
+                        self.addSubview(vie)
+                    }
+                    
+                    self.leftPlaceholder.frame  = CGRect(origin: CGPoint.zero,
+                                                         size: CGSize(width: baseX, height: self.frame.height))
+                    self.addSubview(self.leftPlaceholder)
+                    self.rightPlaceholder.frame = CGRect(origin: CGPoint(x: baseX + CGFloat(itemCount) * itemW, y: 0),
+                                                         size: CGSize(width: baseX, height: self.frame.height))
+                    self.addSubview(self.rightPlaceholder)
+                    
+                    self.viewStore = centerViews
+                    self.fixItemAnimate(0)
+                    self.scaleAnimate()
+                } else {
+                // items 固定位置
+                    let baseX = (self.bounds.width - sigleW) * 0.5 //
+                    self.contentSize = self.bounds.size
+                    for (i, vie) in centerViews.enumerated() {
+                        let rect = CGRect(origin: CGPoint(x: baseX + CGFloat(i) * itemW, y: 0), size: self.itemSize)
+                        vie.frame = rect
+                        vie.clipsToBounds = true
+                        self.addSubview(vie)
+                        let tap = UITapGestureRecognizer(target: self, action: #selector(tapItemGes(tap:)))
+                        vie.addGestureRecognizer(tap)
+                        vie.isUserInteractionEnabled = true
+                        vie.tag = i
+                    }
+                    self.viewStore = centerViews
+                    self.fixItemAnimate(0)
                 }
-                self.viewStore = centerViews
-                
-                self.leftPlaceholder.frame  = CGRect(origin: CGPoint.zero,
-                                                       size: CGSize(width: baseX, height: self.frame.height))
-                self.addSubview(self.leftPlaceholder)
-                self.rightPlaceholder.frame = CGRect(origin: CGPoint(x: baseX + CGFloat(itemCount) * itemW, y: 0),
-                                                       size: CGSize(width: baseX, height: self.frame.height))
-                self.addSubview(self.rightPlaceholder)
-                self.scaleAnimate()
             } else {
                 
                 self.willinfinite = true
@@ -220,6 +267,9 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     }
     
     private func scaleAnimate(){
+        guard self.isAlignmentCenter else {
+            return
+        }
         
         let left = self.contentOffset.x + self.frame.width * 0.5 - self.itemW * 0.5
         let right = left + self.itemW
@@ -235,9 +285,6 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                     targetView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
                     targetView.alpha = self.scaleAlpha
                 })
-//                UIView.animate(withDuration: 0.5, animations: { 
-//                    
-//                })
             }
         }
         
@@ -317,6 +364,29 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     }
     
     
+    // MARK:- **************************************** 当 isAlignmentCenter是false时***********************************************
+    func tapItemGes(tap: UITapGestureRecognizer){
+        self.fixItemAnimate(tap.view!.tag)
+    }
+    
+    private func fixItemAnimate(_ index: Int) {
+        for (i, vie) in self.viewStore.enumerated() {
+            if i == index {
+                UIView.animate(withDuration: 0.1, animations: { 
+                    vie.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    vie.alpha = 1
+                })
+            } else {
+                UIView.animate(withDuration: 0.1, animations: { 
+                    vie.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
+                    vie.alpha = self.scaleAlpha
+                })
+            }
+        }
+    }
+    
+
+    // MARK:- ****************************************doInfinite***********************************************
     override open func layoutSubviews() {
         super.layoutSubviews()
         doInfinite()
@@ -340,7 +410,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
 }
 
 
-fileprivate extension UIView {
+extension UIView {
     fileprivate func snapShot() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0)
         if let context = UIGraphicsGetCurrentContext() {
