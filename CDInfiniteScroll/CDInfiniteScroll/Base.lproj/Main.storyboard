@@ -29,13 +29,13 @@
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.29999999999999999" minValue="0.20000000000000001" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="F0o-sB-Vqw">
-                                <rect key="frame" x="78" y="562" width="268" height="31"/>
+                                <rect key="frame" x="78" y="509" width="268" height="31"/>
                                 <connections>
                                     <action selector="alphaAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="g9h-f0-oM2"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="alpha" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yvr-N7-qqQ">
-                                <rect key="frame" x="16" y="567" width="42" height="21"/>
+                                <rect key="frame" x="16" y="514" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -46,19 +46,45 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pL4-e6-klC">
+                                <rect key="frame" x="78" y="567" width="59" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="59" id="dSZ-kq-KHY"/>
+                                    <constraint firstAttribute="height" constant="40" id="fFP-eg-k4h"/>
+                                </constraints>
+                                <state key="normal" title="previous"/>
+                                <connections>
+                                    <action selector="previousPic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nNv-2n-tg9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JL1-aa-Xhh">
+                                <rect key="frame" x="230" y="566" width="54" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="54" id="QCh-nQ-oEy"/>
+                                    <constraint firstAttribute="height" constant="41" id="nOW-Pz-h0V"/>
+                                </constraints>
+                                <state key="normal" title="next"/>
+                                <connections>
+                                    <action selector="nextPic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Scn-OL-g93"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="qnx-1R-XV3" firstAttribute="leading" secondItem="Npq-RU-L2B" secondAttribute="trailing" constant="22" id="0RS-uD-9dE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="qnx-1R-XV3" secondAttribute="trailing" constant="15" id="Aeu-rR-SEA"/>
-                            <constraint firstItem="yvr-N7-qqQ" firstAttribute="top" secondItem="Npq-RU-L2B" secondAttribute="bottom" constant="105" id="Ai3-6z-b78"/>
+                            <constraint firstItem="yvr-N7-qqQ" firstAttribute="top" secondItem="Npq-RU-L2B" secondAttribute="bottom" constant="52" id="Ai3-6z-b78"/>
                             <constraint firstItem="qnx-1R-XV3" firstAttribute="centerY" secondItem="Npq-RU-L2B" secondAttribute="centerY" id="BJz-x0-GrI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="F0o-sB-Vqw" secondAttribute="trailing" constant="15" id="Fky-2k-WXa"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="pL4-e6-klC" secondAttribute="bottom" constant="60" id="INr-fQ-Exa"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JL1-aa-Xhh" secondAttribute="bottom" constant="60" id="Pvp-0J-EJR"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JL1-aa-Xhh" secondAttribute="trailing" constant="75" id="W5J-FJ-aLE"/>
                             <constraint firstItem="F0o-sB-Vqw" firstAttribute="centerY" secondItem="yvr-N7-qqQ" secondAttribute="centerY" id="cut-Xe-7Bd"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Npq-RU-L2B" secondAttribute="leading" id="m3F-gx-9ib"/>
                             <constraint firstItem="F0o-sB-Vqw" firstAttribute="leading" secondItem="yvr-N7-qqQ" secondAttribute="trailing" constant="22" id="ofX-i4-mjO"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="yvr-N7-qqQ" secondAttribute="bottom" constant="79" id="ogd-8t-Dac"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="yvr-N7-qqQ" secondAttribute="bottom" constant="132" id="ogd-8t-Dac"/>
                             <constraint firstAttribute="leadingMargin" secondItem="yvr-N7-qqQ" secondAttribute="leading" id="puy-0H-wJ1"/>
+                            <constraint firstItem="pL4-e6-klC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="62" id="qa5-9a-8mW"/>
                         </constraints>
                     </view>
                 </viewController>

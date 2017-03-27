@@ -27,14 +27,7 @@ public protocol CDInfiniteScrollDelegate: NSObjectProtocol {
     @objc optional func scrollViewItemsDidSelect(_ scrollView: CDInfiniteScroll, at index: Int)
 }
 
-//enum InfiniteScolStyle {
-//    case scrollFlat
-//    case scrollScale(CGFloat, CGFloat)
-//}
-
 open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
-    
-//    var scrollStyle: InfiniteScolStyle = .scrollFlat
     
     public var scale:      CGFloat = 1 {
         didSet {
@@ -53,8 +46,34 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
             self.setUpContent()
         }
     }
-  
-    public var currentViewIndex = 0
+    
+    private(set) var currentViewIndex = 0
+    
+    // MARK:- ****************************************public***********************************************
+    
+    public func setCurrentIndex(_ index: Int){
+        if self.willinfinite {
+            
+            
+            let offsetX = CGFloat(index) * itemW + sigleW * 2 - self.frame.width * 0.5 + itemW * 0.5
+            
+            self.contentOffset = CGPoint(x: offsetX, y: 0)
+            
+            self.currentViewIndex = index
+            
+        } else {
+            
+            self.currentViewIndex = index
+            let offsetx = CGFloat(index) * itemW
+            
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+                self.contentOffset = CGPoint(x: offsetx, y: 0)
+            }, completion: { (_) in
+                self.snapping = false
+                self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+            })
+        }
+    }
     
     // MARK:- ****************************************inner***********************************************
     
@@ -64,32 +83,51 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     private(set) var itemCount: Int = 0      // 视图数量
     private(set) var viewStore = [UIView]()  // 所有视图
     private(set) var snapping = false        // 是否在自动对齐中
- 
+    
+    private(set) var leftPlaceholder: UIView = {
+        let vv = UIView()
+        vv.backgroundColor = UIColor.clear
+        return vv
+    }()
+    
+    private(set) var rightPlaceholder: UIView = {
+        let vv = UIView()
+        vv.backgroundColor = UIColor.clear
+        return vv
+    }()
+    
+    private(set) var willinfinite = true
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        clipsToBounds = true
-        isPagingEnabled = false
-        backgroundColor = UIColor.clear
-        showsVerticalScrollIndicator = false
-        showsHorizontalScrollIndicator = false
-        
+        self.clipsToBounds = true
+        self.isPagingEnabled = false
+        self.backgroundColor = UIColor.cyan
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
+        self.alwaysBounceHorizontal = true
         self.delegate = self
     }
-   
+    
     private func reSet(){
+        // 清空视图中的items
+        for vvv in self.viewStore {
+            vvv.removeFromSuperview()
+        }
+        
         self.viewStore.removeAll()
         self.snapping = false
         self.currentViewIndex = 0
-        
+        self.willinfinite = true
     }
     
     private func setUpContent(){
         
-        // 视图宽度
+        // 单个视图宽度
         guard let itemW = self.scroDelegate?.itemWidthOfItems(in: self) else { return }
         self.itemW = itemW
-
+        
         // 单个scroll中的视图个数
         guard let itemCount =  self.scroDelegate?.numberOfItems(in: self) else { return }
         self.itemCount = itemCount
@@ -101,11 +139,40 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         
         // 单个scroll中的视图
         if let centerViews = self.scroDelegate?.itemViewsForScrollView(self) {
+            
             guard centerViews.count == itemCount else { return }
             
-            self.contentSize = CGSize(width: sigleW * 5, height: 0)
-            
-            // 首先将中间的scroll试图展示出来
+            if sigleW <= self.bounds.width {
+                
+                self.willinfinite = false
+                
+                let contentWidth = CGFloat(itemCount - 1) * itemW + frame.width
+                self.contentSize = CGSize(width: contentWidth, height: 0)
+                
+                let baseX = (self.frame.width - itemW) * 0.5 //
+                for (i, vie) in centerViews.enumerated() {
+                    let rect = CGRect(origin: CGPoint(x: baseX + CGFloat(i) * itemW, y: 0),
+                                        size: self.itemSize)
+                    vie.frame = rect
+                    vie.clipsToBounds = true
+                    self.addSubview(vie)
+                }
+                self.viewStore = centerViews
+                
+                self.leftPlaceholder.frame  = CGRect(origin: CGPoint.zero,
+                                                       size: CGSize(width: baseX, height: self.frame.height))
+                self.addSubview(self.leftPlaceholder)
+                self.rightPlaceholder.frame = CGRect(origin: CGPoint(x: baseX + CGFloat(itemCount) * itemW, y: 0),
+                                                       size: CGSize(width: baseX, height: self.frame.height))
+                self.addSubview(self.rightPlaceholder)
+                
+            } else {
+                
+                self.willinfinite = true
+                
+                self.contentSize = CGSize(width: sigleW * 5, height: 0)
+                
+                // 首先将中间的scroll试图展示出来
                 for (i, vie) in centerViews.enumerated() {
                     let itemx = self.sigleW * 2 + CGFloat(i) * self.itemW
                     let rect = CGRect(origin: CGPoint(x: itemx, y: 0), size: self.itemSize)
@@ -113,59 +180,48 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                     vie.clipsToBounds = true
                     self.addSubview(vie)
                 }
-            
-            
-            // 两侧视图
-            func addSnapView(vie: UIView, rect: CGRect) -> UIView{
-                let itemView = UIImageView(image: vie.snapShot())
-                itemView.contentMode = .scaleAspectFit
-                itemView.frame = rect
-                itemView.clipsToBounds = true
-                return itemView
-            }
-            
-            var leftSection = [UIView]()
-            for index in [0,1,3,4] { // section下标
-                var sectionArr = [UIView]()
-                for (i, vie) in centerViews.enumerated() {
-                    let itemX = CGFloat(i) * itemW + sigleW * CGFloat(index)
-                    let itemView = addSnapView(vie: vie, rect: CGRect(origin: CGPoint(x: itemX, y:0),
-                                                                        size: itemSize))
-                    sectionArr.append(itemView)
-                    self.addSubview(itemView)
+                
+                // 两侧视图
+                func addSnapView(vie: UIView, rect: CGRect) -> UIView{
+                    let itemView = UIImageView(image: vie.snapShot())
+                    itemView.contentMode = .scaleAspectFit
+                    itemView.frame = rect
+                    itemView.clipsToBounds = true
+                    return itemView
                 }
-                if index < 3 {
-                    leftSection = leftSection + sectionArr
-                } else {
-                    self.viewStore = self.viewStore + sectionArr
+                
+                var leftSection = [UIView]()
+                for index in [0,1,3,4] { // section下标
+                    var sectionArr = [UIView]()
+                    for (i, vie) in centerViews.enumerated() {
+                        let itemX = CGFloat(i) * itemW + sigleW * CGFloat(index)
+                        let itemView = addSnapView(vie: vie, rect: CGRect(origin: CGPoint(x: itemX, y:0),
+                                                                          size: itemSize))
+                        sectionArr.append(itemView)
+                        self.addSubview(itemView)
+                    }
+                    if index < 3 {
+                        leftSection = leftSection + sectionArr
+                    } else {
+                        self.viewStore = self.viewStore + sectionArr
+                    }
                 }
+                self.viewStore = leftSection + centerViews + self.viewStore
+                // set 偏移量
+                let offSet = sigleW * 2 - self.frame.width * 0.5 + itemW * 0.5
+                self.setContentOffset(CGPoint(x: offSet, y: 0), animated: false)
             }
-            self.viewStore = leftSection + centerViews + self.viewStore
         }
         
-        // set 偏移量
-        let offSet = sigleW * 2 - self.frame.width * 0.5 + itemW * 0.5
-        self.setContentOffset(CGPoint(x: offSet, y: 0), animated: false)
-
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scaleAnimate()
     }
     
-    func scaleAnimate(){
-        //        var scale: CGFloat = 1
-        //        var itemAlp:   CGFloat = 1
-        //        switch self.scrollStyle {
-        //        case .scrollFlat:
-        //            scale = 1
-        //        case .scrollScale(let sc, let alp):
-        //            if sc  >= 0.5 && sc  <= 1 { scale   = sc }
-        //            if alp >= 0.2 && alp <= 1 { itemAlp = alp }
-        //        }
-        //
-        let left = self.contentOffset.x + self.frame.width * 0.5 - self.itemW * 0.5
+    private func scaleAnimate(){
         
+        let left = self.contentOffset.x + self.frame.width * 0.5 - self.itemW * 0.5
         let right = left + self.itemW
         
         for targetView in self.viewStore {
@@ -179,6 +235,9 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                     targetView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
                     targetView.alpha = self.scaleAlpha
                 })
+//                UIView.animate(withDuration: 0.5, animations: { 
+//                    
+//                })
             }
         }
         
@@ -199,35 +258,60 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         }
     }
     
-    func snapEmotion(){
-        self.snapping = true
-        var centerView: UIView!
-    
-        let left = self.contentOffset.x + self.frame.width * 0.5 - self.itemW * 0.5
-
-        let right = left + self.itemW
+    private func snapEmotion(){
         
-        for (i, targetView) in self.viewStore.enumerated() {
-            if targetView.center.x > left && targetView.center.x < right {
-                centerView = targetView
-                self.currentViewIndex = i % itemCount
-            }
-        }
-        
-        if centerView != nil {
+        if willinfinite {
+            self.snapping = true
+            var centerView: UIView!
             
-            let dX = self.contentOffset.x - (centerView.center.x - self.frame.width * 0.5)
-            let newX = self.contentOffset.x - dX
-            UIView.animate(withDuration: 0.1, animations: { 
-                self.contentOffset = CGPoint(x: newX, y: 0)
-                centerView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            }, completion: { (_) in
+            let left = self.contentOffset.x + self.frame.width * 0.5 - self.itemW * 0.5
+            
+            let right = left + self.itemW
+            
+            for (i, targetView) in self.viewStore.enumerated() {
+                if targetView.center.x > left && targetView.center.x < right {
+                    centerView = targetView
+                    self.currentViewIndex = i % itemCount
+                }
+            }
+            
+            if centerView != nil {
+                let dX = self.contentOffset.x - (centerView.center.x - self.frame.width * 0.5)
+                let newX = self.contentOffset.x - dX
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.contentOffset = CGPoint(x: newX, y: 0)
+                    centerView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                }, completion: { (_) in
+                    self.snapping = false
+                    self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+                })
+            } else {
                 self.snapping = false
                 self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
-            })
+            }
         } else {
-            self.snapping = false
-            self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+            self.snapping = true
+            if self.contentOffset.x < 0 {
+                self.snapping = false
+                return
+            } else {
+                func test(_ abc: Int) -> Int{
+                    if abc % 2 == 0 {
+                        return abc / 2
+                    } else {
+                        return (abc + 1 ) / 2
+                    }
+                }
+                self.currentViewIndex = test(Int(self.contentOffset.x) / Int(self.itemW * 0.5))
+                let offsetx = CGFloat(currentViewIndex) * itemW
+
+                UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+                    self.contentOffset = CGPoint(x: offsetx, y: 0)
+                }, completion: { (_) in
+                    self.snapping = false
+                    self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+                })
+            }
         }
         
     }
@@ -239,6 +323,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     }
     
     func doInfinite(){
+        guard self.willinfinite else { return }
         if self.contentOffset.x > 0 {
             if self.contentOffset.x <= sigleW * 0.5 {
                 self.contentOffset = CGPoint(x: sigleW * 1.5, y: 0)
