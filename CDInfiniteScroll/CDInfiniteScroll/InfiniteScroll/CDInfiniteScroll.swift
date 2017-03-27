@@ -129,7 +129,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         self.isAlignmentCenter = isAlignmentCenter
         self.clipsToBounds = true
         self.isPagingEnabled = false
-        self.backgroundColor = UIColor.cyan
+        self.backgroundColor = UIColor.clear
         self.showsVerticalScrollIndicator = false
         self.showsHorizontalScrollIndicator = false
         self.alwaysBounceHorizontal = true
