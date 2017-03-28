@@ -33,7 +33,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
      */
     public var scale:      CGFloat = 1 {
         didSet {
-            if isAlignmentCenter {
+            if willinfinite || isAlignmentCenter {
                 self.scaleAnimate()
             } else {
                 self.fixItemAnimate(self.currentViewIndex)
@@ -47,7 +47,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
     public var scaleAlpha: CGFloat = 1 {
         didSet {
-            if isAlignmentCenter {
+            if willinfinite || isAlignmentCenter {
                 self.scaleAnimate()
             } else {
                 self.fixItemAnimate(self.currentViewIndex)
@@ -78,17 +78,16 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
             self.currentViewIndex = index
             
         } else {
-            self.currentViewIndex = index
             
             if isAlignmentCenter {
                 let offsetx = CGFloat(index) * itemW
-                
+                self.currentViewIndex = index
                 UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                     self.contentOffset = CGPoint(x: offsetx, y: 0)
                 }, completion: { (_) in
                     self.snapping = false
-                    self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
                 })
+                
             } else {
                 self.fixItemAnimate(index)
             }
@@ -262,12 +261,14 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
         
     }
     
+    // MARK:- ****************************************监听滚动***********************************************
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scaleAnimate()
     }
     
     private func scaleAnimate(){
-        guard self.isAlignmentCenter else {
+        
+        if !self.willinfinite && !self.isAlignmentCenter {
             return
         }
         
@@ -337,6 +338,9 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
                 self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
             }
         } else {
+            guard self.isAlignmentCenter else {
+                return
+            }
             self.snapping = true
             if self.contentOffset.x < 0 {
                 self.snapping = false
@@ -366,15 +370,20 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
     
     // MARK:- **************************************** 当 isAlignmentCenter是false时***********************************************
     func tapItemGes(tap: UITapGestureRecognizer){
-        self.fixItemAnimate(tap.view!.tag)
+        self.fixItemAnimate(tap.view!.tag) { 
+            self.scroDelegate?.scrollViewItemsDidSelect?(self, at: self.currentViewIndex)
+        }
     }
     
-    private func fixItemAnimate(_ index: Int) {
+    private func fixItemAnimate(_ index: Int, complete: (()-> Void)? = nil) {
         for (i, vie) in self.viewStore.enumerated() {
             if i == index {
-                UIView.animate(withDuration: 0.1, animations: { 
+                UIView.animate(withDuration: 0.2, animations: { 
                     vie.transform = CGAffineTransform(scaleX: 1, y: 1)
                     vie.alpha = 1
+                }, completion: { (_) in
+                    self.currentViewIndex = i
+                    complete?()
                 })
             } else {
                 UIView.animate(withDuration: 0.1, animations: { 
