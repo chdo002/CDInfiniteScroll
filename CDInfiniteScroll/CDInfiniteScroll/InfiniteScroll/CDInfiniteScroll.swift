@@ -166,7 +166,7 @@ open class CDInfiniteScroll: UIScrollView, UIScrollViewDelegate{
             
             guard centerViews.count == itemCount else { return }
             
-            if sigleW <= self.bounds.width {
+            if sigleW < self.bounds.width {
                 
                 self.willinfinite = false
                 
